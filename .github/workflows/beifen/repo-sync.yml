@@ -24,6 +24,7 @@ jobs:
         uses: repo-sync/github-sync@v2
         if: env.PAT
         with:
+        # https://gitee.com/lxk0301/jd_scripts.git
           source_repo: "https://github.com/ZFeng3242/MyScripts.git"
           source_branch: "main"
           destination_branch: "main"
