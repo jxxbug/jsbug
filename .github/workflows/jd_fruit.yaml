@@ -1,32 +1,31 @@
 # This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: speed_redpocke
+name: fruit京东农场
 
 on:
     workflow_dispatch:
     schedule:
-        - cron: "50 4,16 * * *"
+        - cron: "0 3,9,16,22 * * *"
     watch:
         types: [started]
     repository_dispatch:
-        types: jd_speed_redpocke
-
+        types: jd_fruit
+        
 jobs:
     build:
         runs-on: ubuntu-latest
         if: github.event.repository.owner.id == github.event.sender.id
         steps:
-            - name: 拉取代码
-              uses: actions/checkout@v2
-            - name: Use Node.js
+            - uses: actions/checkout@v1
+            - name: Use Node.js 10.x
               uses: actions/setup-node@v1
               with:
-                  node-version: "12.x"
-            - name: 安装依赖包
+                  node-version: 10.x
+            - name: npm install
               run: |
                   npm install
-            - name: "运行【京东极速版领现金】"
+            - name: "运行 【京东农场】"
               run: |
                   node onlyOneExecute.js
               env:
@@ -47,4 +46,8 @@ jobs:
                   QYWX_AM: ${{ github.event.client_payload.QYWX_AM || secrets.QYWX_AM }}
                   PUSH_PLUS_TOKEN: ${{ github.event.client_payload.PUSH_PLUS_TOKEN || secrets.PUSH_PLUS_TOKEN }}
                   PUSH_PLUS_USER: ${{ github.event.client_payload.PUSH_PLUS_USER || secrets.PUSH_PLUS_USER }}
-                  SYNCURL: https://github.com/ZFeng3242/MyScripts/raw/main/jd_speed_redpocke.js
+                  FRUIT_BEAN_CARD: ${{ github.event.client_payload.FRUIT_BEAN_CARD || secrets.FRUIT_BEAN_CARD }}
+                  FRUIT_NOTIFY_CONTROL: ${{ github.event.client_payload.FRUIT_NOTIFY_CONTROL || secrets.FRUIT_NOTIFY_CONTROL }}
+                  FRUITSHARECODES: ${{ github.event.client_payload.FruitShareCodes || secrets.FruitShareCodes }}
+                  SYNCURL: https://github.com/ZFeng3242/MyScripts/raw/main/jd_fruit.js
+                  IGNORE_COOKIE_JDNC: ${{ github.event.client_payload.IGNORE_COOKIE_JDNC || secrets.IGNORE_COOKIE_JDNC }} #京东农场禁用某些cookie的执行,因为通知太烦了呀,比如要禁用第2和第四个的执行,则填入[2,4]即可,包含中括号哦
