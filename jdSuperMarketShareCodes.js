@@ -548,7 +548,6 @@ async function upgrade() {
   if ($.isNode() && process.env.SUPERMARKET_UPGRADE) {
     superMarketUpgrade = process.env.SUPERMARKET_UPGRADE;
   }
-  superMarketUpgrade = 'true'
   if (`${superMarketUpgrade}` === 'false') {
     console.log(`\n自动升级: 您设置的是关闭自动升级\n`);
     return
