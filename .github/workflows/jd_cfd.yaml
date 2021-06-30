@@ -6,7 +6,7 @@ name: jd_cfd 京喜财富岛
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 3,9,16,22 * * *'
+    - cron: '0 0,8 * * *'
   watch:
     types: started
   repository_dispatch:
