@@ -11,7 +11,28 @@ let shareCodes = [
 ' '
 ]
 // 判断github action里面是否有京喜工厂互助码
-if (process.env.DREAM_FACTORY_SHARE_CODES) {
+let JD_shareCode_Arr = ''
+try {
+  let jdCookieNode = require('./jdCookie.js') ;
+  let shareCodeJSON =require('./config/shareCodeJSON.js').shareCodeJSON
+  let cookiesArr = []
+  Object.keys(jdCookieNode).forEach((item) => {
+    cookiesArr.push(jdCookieNode[item])
+  })
+  if(shareCodeJSON){
+    let thisCodes = shareCodeJSON.DREAM_FACTORY_SHARE_CODES
+    if(thisCodes){
+      JD_shareCode_Arr = Array(cookiesArr.length).fill(thisCodes);
+      console.log(`使用config/shareCodeJSON.js的助力码${JD_shareCode_Arr.length}个\n`)
+    }
+  } 
+} catch (error) {
+  console.log(error)
+}
+
+if(JD_shareCode_Arr){
+  shareCodes = JD_shareCode_Arr
+} else if (process.env.DREAM_FACTORY_SHARE_CODES) {
   if (process.env.DREAM_FACTORY_SHARE_CODES.indexOf('&') > -1) {
     console.log(`您的互助码选择的是用&隔开\n`)
     shareCodes = process.env.DREAM_FACTORY_SHARE_CODES.split('&');

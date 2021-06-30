@@ -12,7 +12,28 @@ let shareCodes = [
   '',//账号二的好友shareCode，不同好友中间用@符号隔开
 ]
 // 判断github action里面是否有东东工厂互助码
-if (process.env.DDFACTORY_SHARECODES) {
+let JD_shareCode_Arr = ''
+try {
+  let jdCookieNode = require('./jdCookie.js') ;
+  let shareCodeJSON =require('./config/shareCodeJSON.js').shareCodeJSON
+  let cookiesArr = []
+  Object.keys(jdCookieNode).forEach((item) => {
+    cookiesArr.push(jdCookieNode[item])
+  })
+  if(shareCodeJSON){
+    let thisCodes = shareCodeJSON.DDFACTORY_SHARECODES
+    if(thisCodes){
+      JD_shareCode_Arr = Array(cookiesArr.length).fill(thisCodes);
+      console.log(`使用config/shareCodeJSON.js的助力码${JD_shareCode_Arr.length}个\n`)
+    }
+  } 
+} catch (error) {
+  console.log(error)
+}
+
+if(JD_shareCode_Arr){
+  shareCodes = JD_shareCode_Arr
+} else if (process.env.DDFACTORY_SHARECODES) {
   if (process.env.DDFACTORY_SHARECODES.indexOf('&') > -1) {
     console.log(`您的互助码选择的是用&隔开\n`)
     shareCodes = process.env.DDFACTORY_SHARECODES.split('&');

@@ -8,11 +8,31 @@
 // 同一个京东账号的好友互助码用@符号隔开,不同京东账号之间用&符号或者换行隔开,下面给一个示例
 // 如: 京东账号1的shareCode1@京东账号1的shareCode2&京东账号2的shareCode1@京东账号2的shareCode2
 let FruitShareCodes = [
-  '53a8a82a86dbf47e283a644b5a35b1c4',//账号一的好友shareCode,不同好友中间用@符号隔开
-  '53a8a82a86dbf47e283a644b5a35b1c4',//账号二的好友shareCode，不同好友中间用@符号隔开
+  '',//账号二的好友shareCode，不同好友中间用@符号隔开
 ]
 // 判断github action里面是否有东东农场互助码
-if (process.env.FRUITSHARECODES) {
+let JD_shareCode_Arr = ''
+try {
+  let jdCookieNode = require('./jdCookie.js') ;
+  let shareCodeJSON =require('./config/shareCodeJSON.js').shareCodeJSON
+  let cookiesArr = []
+  Object.keys(jdCookieNode).forEach((item) => {
+    cookiesArr.push(jdCookieNode[item])
+  })
+  if(shareCodeJSON){
+    let thisCodes = shareCodeJSON.FRUITSHARECODES
+    if(thisCodes){
+      JD_shareCode_Arr = Array(cookiesArr.length).fill(thisCodes);
+      console.log(`使用config/shareCodeJSON.js的助力码${JD_shareCode_Arr.length}个\n`)
+    }
+  } 
+} catch (error) {
+  console.log(error)
+}
+
+if(JD_shareCode_Arr){
+  shareCodes = JD_shareCode_Arr
+} else if (process.env.FRUITSHARECODES) {
   if (process.env.FRUITSHARECODES.indexOf('&') > -1) {
     console.log(`您的东东农场互助码选择的是用&隔开\n`)
     FruitShareCodes = process.env.FRUITSHARECODES.split('&');
