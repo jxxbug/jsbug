@@ -759,7 +759,21 @@ function requireConfig() {
     //Node.js用户请在jdCookie.js处填写京东ck;
     let shareCodes = [];
     if ($.isNode()) {
-      if (process.env.JDJOY_SHARECODES) {
+
+      let JD_shareCode_Arr = ''
+      try {
+        let shareCodeJSON =require('./config/shareCodeJSON.js').shareCodeJSON.JDJOY_SHARECODES
+        if(shareCodeJSON){
+          JD_shareCode_Arr = Array(cookiesArr.length).fill(shareCodeJSON);
+        }
+        console.log(`使用config/shareCodeJSON.js的助力码${JD_shareCode_Arr.length}个\n`)
+      } catch (error) {
+        console.log(error)
+      }
+
+      if(JD_shareCode_Arr){
+        shareCodes = JD_shareCode_Arr
+      } else if (process.env.JDJOY_SHARECODES) {
         if (process.env.JDJOY_SHARECODES.indexOf('\n') > -1) {
           shareCodes = process.env.JDJOY_SHARECODES.split('\n');
         } else {

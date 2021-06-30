@@ -393,7 +393,18 @@ function requireConfig() {
     console.log(`开始获取${$.name}配置文件\n`);
     let shareCodes = [];
     if ($.isNode()) {
-      if (process.env.JD_CASH_SHARECODES) {
+      let JD_shareCode_Arr = ''
+      try {
+        let shareCodeJSON =require('./config/shareCodeJSON.js').shareCodeJSON.JD_CASH_SHARECODES
+        if(shareCodeJSON){
+          JD_shareCode_Arr = Array(cookiesArr.length).fill(shareCodeJSON);
+        }        console.log(`使用config/shareCodeJSON.js的助力码${JD_shareCode_Arr.length}个\n`)
+      } catch (error) {
+        console.log(error)
+      }
+      if(JD_shareCode_Arr){
+        shareCodes = JD_shareCode_Arr
+      } else if (process.env.JD_CASH_SHARECODES) {
         if (process.env.JD_CASH_SHARECODES.indexOf('\n') > -1) {
           shareCodes = process.env.JD_CASH_SHARECODES.split('\n');
         } else {

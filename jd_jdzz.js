@@ -39,8 +39,7 @@ if ($.isNode()) {
 }
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
 const inviteCodes = [
-  `S5KkcRxwap1DfIBPynfVbcg@S5KkcOGRatCyXYGmj6LBs@S5KkcRB0Z9VbQcRP8wvcOJw@S5KkcRhga91XSIUiikvACJg@S5KkcRRlP8wDRKB_xwP9edw@S5KkcPkxMtC6eSHue56hV@S5KkcRBpMoVPUJxL8kvMNdg@S5KkcREwa9wXSJRPywqMJfQ@S5KkcRkof9QXVdR7zwaZYcg@S5KkcCVhHoi6RanmRw45R@S9_tzQhwf81DQJw@S5KkcRkwQ9lLUJh-mwfZYIQ@S5KkcMX5wsTafSkKP9rBz@S5KkcE319qyKTQ3OB4692@S5KkcNmhFgBeCQ2-9wIBN@S5KkcOFpItiyAfmyy0Ilv@S5KkcFV5dizyvWn6V7JdA`,
-  `S5KkcRxwap1DfIBPynfVbcg@S5KkcOGRatCyXYGmj6LBs@S5KkcRB0Z9VbQcRP8wvcOJw@S5KkcRhga91XSIUiikvACJg@S5KkcRRlP8wDRKB_xwP9edw@S5KkcPkxMtC6eSHue56hV@S5KkcRBpMoVPUJxL8kvMNdg@S5KkcREwa9wXSJRPywqMJfQ@S5KkcRkof9QXVdR7zwaZYcg@S5KkcCVhHoi6RanmRw45R@S9_tzQhwf81DQJw@S5KkcRkwQ9lLUJh-mwfZYIQ@S5KkcMX5wsTafSkKP9rBz@S5KkcE319qyKTQ3OB4692@S5KkcNmhFgBeCQ2-9wIBN@S5KkcOFpItiyAfmyy0Ilv@S5KkcFV5dizyvWn6V7JdA`
+  ''
 ]
 let nowTimes = new Date(new Date().getTime() + new Date().getTimezoneOffset() * 60 * 1000 + 8 * 60 * 60 * 1000);
 !(async () => {
@@ -255,7 +254,16 @@ function shareCodesFormat() {
   return new Promise(async resolve => {
     // console.log(`第${$.index}个京东账号的助力码:::${$.shareCodesArr[$.index - 1]}`)
     $.newShareCodes = [];
-    if ($.shareCodesArr[$.index - 1]) {
+    let shareCodeJSON  = ''
+    try {
+      let shareCodeJSON =require('./config/shareCodeJSON.js').shareCodeJSON.JDZZ_SHARECODES
+      console.log(`使用config/shareCodeJSON.js的助力码\n`)
+    } catch (error) {
+      console.log(error)
+    }
+    if(shareCodeJSON){
+      $.newShareCodes = shareCodeJSON.split('@');
+    } else if ($.shareCodesArr[$.index - 1]) {
       $.newShareCodes = $.shareCodesArr[$.index - 1].split('@');
     } else {
       console.log(`由于您第${$.index}个京东账号未提供shareCode,将采纳本脚本自带的助力码\n`)

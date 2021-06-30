@@ -262,11 +262,25 @@ function requireConfig() {
     //Node.js用户请在jdCookie.js处填写京东ck;
     let shareCodes = []
     console.log(`共${cookiesArr.length}个京东账号\n`);
-    if ($.isNode() && process.env.JDSGMH_SHARECODES) {
-      if (process.env.JDSGMH_SHARECODES.indexOf('\n') > -1) {
-        shareCodes = process.env.JDSGMH_SHARECODES.split('\n');
-      } else {
-        shareCodes = process.env.JDSGMH_SHARECODES.split('&');
+    
+    if ($.isNode()) {
+      let JD_shareCode_Arr = ''
+      try {
+        let shareCodeJSON =require('./config/shareCodeJSON.js').shareCodeJSON.JDSGMH_SHARECODES
+        if(shareCodeJSON){
+          JD_shareCode_Arr = Array(cookiesArr.length).fill(shareCodeJSON);
+        }        console.log(`使用config/shareCodeJSON.js的助力码${JD_shareCode_Arr.length}个\n`)
+      } catch (error) {
+        console.log(error)
+      }
+      if(JD_shareCode_Arr){
+        shareCodes = JD_shareCode_Arr
+      } else if(process.env.JDSGMH_SHARECODES){
+        if (process.env.JDSGMH_SHARECODES.indexOf('\n') > -1) {
+          shareCodes = process.env.JDSGMH_SHARECODES.split('\n');
+        } else {
+          shareCodes = process.env.JDSGMH_SHARECODES.split('&');
+        }
       }
     }
     $.shareCodesArr = [];
