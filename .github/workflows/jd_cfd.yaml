@@ -10,7 +10,7 @@ on:
   watch:
     types: started
   repository_dispatch:
-    types: fruit
+    types: jd_cfd
 jobs:
   build:
 
@@ -28,7 +28,7 @@ jobs:
         run: |
           cd ~/jsbug
           npm install
-      - name: '运行 【东东农场】'
+      - name: '运行 【京喜财富岛】'
         run: |
           cd ~/jsbug
           node jx_cfdtx.js
