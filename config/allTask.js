@@ -21,24 +21,6 @@ fs.exists('logs', (exists) => {
 console.log('当前运行目录：' + root)
 console.log(`${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`)
 
-function doWriteFile(file, str, flag) {
-  // 写入文件内容（如果文件不存在会创建一个文件）
-  //  { 'flag': 'a' } 文件末尾追加内容
-  let path = 'logs/' + file + '.txt'
-  fs.writeFile(path, str, { 'flag': flag || '' }, function (err) {
-    console.log(str + '' + file)
-    str = str || ''
-    time = str.substr(str.indexOf('🕛') + 2)
-    time.substr(0, time.indexOf('秒') + 1)
-    time = (time || '').length < 20 ? time : ''
-    let d = new Date()
-    console.log(`${d.getHours()}:${d.getMinutes()}:${d.getSeconds()} 写入日志文件 ${path} 耗时：${time}`)
-  });
-}
-
-
-
-
 
 //不执行的js文件
 var notList = [
@@ -187,25 +169,6 @@ function runTask() {
     let code = 'node ' + thisFile
     runScript(code, thisFile)
   }
-
-  setInterval(function () {
-    let date = new Date();
-    let s = date.getSeconds();//(0 ~ 59)
-    let m = date.getMinutes();//(0 ~ 59)
-    let h = date.getHours();//(0 ~ 23)  
-    let key = h + '_' + m
-    if (!taskLog[key]) {
-      taskLog[key] = true
-      console.log(`时间${h}:${m}:${s} 查找需要执行的任务...`)
-      for (let i = 0; i < runFileList.length; i++) {
-        const thisFile = runFileList[i];
-        if (isTheTime(thisFile, date)) {
-          let code = 'node ' + thisFile
-          runScript(code, thisFile)
-        }
-      }
-    }
-  }, 1000);
 }
 
 function runScript(code, file) {
@@ -216,7 +179,6 @@ function runScript(code, file) {
     error = error || ''
     stderr = stderr || ''
     stdout = stdout || ''
-    doWriteFile(file, stdout)
     if (error) {
       console.log(`error: ${file}:${error}`);
       return;
