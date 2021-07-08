@@ -89,6 +89,7 @@ async function jdMh(url) {
     await getInfo(url)
     await getUserInfo()
     await draw()
+    $.userInfo = $.userInfo ||''
     while ($.userInfo.bless >= $.userInfo.cost_bless_one_time) {
       await draw()
       await getUserInfo()
@@ -138,6 +139,7 @@ function getUserInfo() {
         } else {
           $.userInfo = JSON.parse(data.match(/query\((.*)\n/)[1]).data
           // console.log(`您的好友助力码为${$.userInfo.shareid}`)
+          $.userInfo = $.userInfo ||''
           console.log(`当前幸运值：${$.userInfo.bless}`)
           for (let task of $.info.config.tasks) {
             if (!$.userInfo.complete_task_list.includes(task['_id'])) {
@@ -168,6 +170,7 @@ function doTask(taskId) {
           data = JSON.parse(data.match(/query\((.*)\n/)[1])
           if (data.data.complete_task_list.includes(taskId)) {
             console.log(`任务完成成功，当前幸运值${data.data.curbless}`)
+            $.userInfo = $.userInfo ||''
             $.userInfo.bless = data.data.curbless
           }
         }

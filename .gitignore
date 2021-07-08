@@ -8,5 +8,9 @@
 /logs
 /JD_DailyBonus.js
 /result.txt
-/config/beifen
 /beifen
+/config/formatCookie.js
+/config/githubCookies.md
+/config/myCookies.js
+/config/runAllTask.js
+/config/shareCodeJSON.md
