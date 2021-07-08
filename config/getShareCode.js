@@ -85,7 +85,6 @@ let keyToCode = {
   }
 
 let jsStr = 'const shareCodeJSON = '+ JSON.stringify(fileJson)+';'
-jsStr += formatEnvStr
 jsStr += '\n module.exports.shareCodeJSON = shareCodeJSON;'
 fs.writeFile('config/shareCodeJSON.js', jsStr, { 'flag': '' }, function(err) {
   console.log(`生成互助码文件：config/shareCodeJSON.js`)
